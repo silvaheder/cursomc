@@ -17,7 +17,7 @@ public class PedidoService {
 	@Autowired
 	private PedidoRepository repo;
 	
-	public Pedido buscar(Integer id) throws ObjectNotFaundException {
+	public Pedido find(Integer id) throws ObjectNotFaundException {
 		
 			Optional<Pedido> obj = repo.findById(id);
 			return obj.orElseThrow(() -> new ObjectNotFaundException(

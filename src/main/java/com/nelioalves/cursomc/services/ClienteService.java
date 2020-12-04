@@ -19,7 +19,7 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 	
-	public Cliente buscar(Integer id) throws ObjectNotFaundException {
+	public Cliente find(Integer id) throws ObjectNotFaundException {
 		
 			Optional<Cliente> obj = repo.findById(id);
 			return obj.orElseThrow(() -> new ObjectNotFaundException(
