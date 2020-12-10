@@ -2,6 +2,8 @@ package com.nelioalves.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.persistence.UniqueConstraint;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -13,7 +15,6 @@ import com.nelioalves.cursomc.services.validation.ClienteInsert;
 public class ClienteNewDTO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
 	
 	@NotEmpty(message = "Preenchimento obrigatorio")
 	@Length(min=5, max=120 , message = "o tamanho deve ser entre 5 e 120 caracteres")
