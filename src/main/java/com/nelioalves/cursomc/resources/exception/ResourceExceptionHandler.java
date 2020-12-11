@@ -9,15 +9,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.nelioalves.cursomc.services.exceptions.AutorizationException;
+import com.nelioalves.cursomc.services.exceptions.AuthorizationException;
 import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
-import com.nelioalves.cursomc.services.exceptions.ObjectNotFaundException;
+import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-	@ExceptionHandler(ObjectNotFaundException.class)
-	public ResponseEntity<StandarError> objectNotFound(ObjectNotFaundException e, HttpServletRequest request) {
+	@ExceptionHandler(ObjectNotFoundException.class)
+	public ResponseEntity<StandarError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
 
 		StandarError err = new StandarError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
@@ -43,8 +43,8 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 	
-	@ExceptionHandler(AutorizationException.class)
-	public ResponseEntity<StandarError> autorization(AutorizationException e, HttpServletRequest request) {
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandarError> autorization(AuthorizationException e, HttpServletRequest request) {
 
 		StandarError err = new StandarError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);

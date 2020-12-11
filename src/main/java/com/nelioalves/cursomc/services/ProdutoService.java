@@ -13,7 +13,7 @@ import com.nelioalves.cursomc.domain.Categoria;
 import com.nelioalves.cursomc.domain.Produto;
 import com.nelioalves.cursomc.repositories.CategoriaRepository;
 import com.nelioalves.cursomc.repositories.ProdutoRepository;
-import com.nelioalves.cursomc.services.exceptions.ObjectNotFaundException;
+import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
 
 
@@ -26,10 +26,10 @@ public class ProdutoService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
-	public Produto find(Integer id) throws ObjectNotFaundException {
+	public Produto find(Integer id) throws ObjectNotFoundException {
 		
 			Optional<Produto> obj = repo.findById(id);
-			return obj.orElseThrow(() -> new ObjectNotFaundException(
+			return obj.orElseThrow(() -> new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Produto.class.getName()));
 	}
 	

@@ -22,9 +22,9 @@ import com.nelioalves.cursomc.dto.ClienteNewDTO;
 import com.nelioalves.cursomc.repositories.ClienteRepository;
 import com.nelioalves.cursomc.repositories.EnderecoRepository;
 import com.nelioalves.cursomc.security.UserSS;
-import com.nelioalves.cursomc.services.exceptions.AutorizationException;
+import com.nelioalves.cursomc.services.exceptions.AuthorizationException;
 import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
-import com.nelioalves.cursomc.services.exceptions.ObjectNotFaundException;
+import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
@@ -41,18 +41,18 @@ public class ClienteService {
 	
 
 	
-	public Cliente find(Integer id) throws ObjectNotFaundException {
+	public Cliente find(Integer id) throws ObjectNotFoundException {
 		
 		UserSS user = UserService.authenticated();
 		
 		if(user == null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			
-			throw new AutorizationException("Acesso negado");
+			throw new AuthorizationException("Acesso negado");
 			
 		}
 		
 			Optional<Cliente> obj = repo.findById(id);
-			return obj.orElseThrow(() -> new ObjectNotFaundException(
+			return obj.orElseThrow(() -> new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
 	
