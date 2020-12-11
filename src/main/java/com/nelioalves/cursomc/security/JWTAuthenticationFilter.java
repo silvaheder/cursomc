@@ -22,6 +22,7 @@ import com.nelioalves.cursomc.dto.CredenciaisDTO;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
+	
     
     private JWTUtil jwtUtil;
 
