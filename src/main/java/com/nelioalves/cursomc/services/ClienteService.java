@@ -39,6 +39,9 @@ public class ClienteService {
 	private ClienteRepository repo;
 	
 	@Autowired
+	private ClienteService serv;
+	
+	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
@@ -136,6 +139,19 @@ public class ClienteService {
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
 		
-		return s3Service.uploadFile(multipartFile);
+		UserSS user = UserService.authenticated();
+		
+		if(user == null) {
+			
+			throw new AuthorizationException("Acesso Negado");
+		}
+		
+		URI uri = s3Service.uploadFile(multipartFile);
+		
+		Cliente cli = serv.find(user.getId());
+		cli.setImageUrl(uri.toString());
+		repo.save(cli);
+	
+		return uri;
 	}
 }
