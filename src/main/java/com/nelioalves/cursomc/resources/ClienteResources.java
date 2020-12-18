@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,8 +24,8 @@ import com.nelioalves.cursomc.domain.Cliente;
 import com.nelioalves.cursomc.dto.ClienteDTO;
 import com.nelioalves.cursomc.dto.ClienteNewDTO;
 import com.nelioalves.cursomc.services.ClienteService;
+import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
-import javassist.tools.rmi.ObjectNotFoundException;
 
 @RestController
 @RequestMapping(value="/clientes")
@@ -32,11 +33,22 @@ public class ClienteResources {
 	
 	@Autowired
 	private ClienteService service;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
+	
 
 	@RequestMapping(value = "/{id}",method = RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) throws ObjectNotFoundException {
 		
 		Cliente obj = service.find(id);	
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value = "/email", method=RequestMethod.GET)
+	public ResponseEntity<Cliente> find(@RequestParam(value = "value") String email){
+		
+		Cliente obj = service.findByEmail(email);
 		return ResponseEntity.ok().body(obj);
 	}
 	

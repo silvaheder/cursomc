@@ -49,6 +49,7 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
+
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
 	
@@ -101,6 +102,25 @@ public class ClienteService {
 		return repo.findAll();
 	}
 	
+ 	public Cliente findByEmail(String email) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user==null || !user.hasHole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		Cliente obj = repo.findByEmail(email);
+		
+		if(obj == null){
+			
+			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId() + " ,Tipo: " + Cliente.class.getName());
+		}
+		
+		
+		return obj;		
+	}
+	
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
@@ -141,7 +161,7 @@ public class ClienteService {
 		newObj.setEmail(obj.getEmail());
 	}
 	
-	public URI uploadProfilePicture(MultipartFile multipartFile) {
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
 		
 		UserSS user = UserService.authenticated();
 		
